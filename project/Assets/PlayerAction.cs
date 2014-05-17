@@ -2,11 +2,10 @@
 using System.Collections;
 
 public class PlayerAction : MonoBehaviour {
-	bool flag;
+
 
 	// Use this for initialization
 	void Start () {
-		flag = true;
 	}
 	
 	// Update is called once per frame
@@ -15,23 +14,27 @@ public class PlayerAction : MonoBehaviour {
 		Vector3 move = new Vector3();
 		//if(networkView.isMine == true)
 		//{		
-			move.x = Input.GetAxis("Horizontal");
-			move = Vector3.ClampMagnitude(move, 1.0f/5);
+			//move.x = Input.GetAxis("Horizontal");
+			//move = Vector3.ClampMagnitude(move, 1.0f/10);
 		//}
 
-
-		if(Input.GetKeyDown(KeyCode.Space) && flag)
+		Quaternion newRotation = transform.localRotation;
+		if(Input.GetKey(KeyCode.RightArrow))
 		{
-			gameObject.rigidbody.velocity = Vector3.up * 5;
-			flag = false;
+			move = Vector3.right * 0.05f;
+
+			newRotation.eulerAngles = new Vector3(0, 90, 0);
+			transform.localRotation = newRotation;
 		}
 
+		if(Input.GetKey(KeyCode.LeftArrow))
+		{
+			move = Vector3.left * 0.05f;
+			newRotation.eulerAngles = new Vector3(0, -90, 0);
+			transform.localRotation = newRotation;
+		}
 
 		transform.position = (transform.position + move);
 	}
 
-	private void OnCollisionEnter(Collision other)
-	{
-		flag = true;
-	}
 }
